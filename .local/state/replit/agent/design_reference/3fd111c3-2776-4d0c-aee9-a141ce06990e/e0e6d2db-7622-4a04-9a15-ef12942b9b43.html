@@ -1,0 +1,901 @@
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Island Properties - Premium Real Estate</title>
+    <meta name="description" content="Discover premium properties with Island Properties. Houses, land, condos, beachfront, commercial, and agricultural properties.">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+    tailwind.config = {
+        theme: {
+            extend: {
+                borderRadius: {
+                    lg: "var(--radius)",
+                    md: "calc(var(--radius) - 2px)", 
+                    sm: "calc(var(--radius) - 4px)",
+                },
+                colors: {
+                    background: "var(--background)",
+                    foreground: "var(--foreground)",
+                    card: {
+                        DEFAULT: "var(--card)",
+                        foreground: "var(--card-foreground)",
+                    },
+                    popover: {
+                        DEFAULT: "var(--popover)",
+                        foreground: "var(--popover-foreground)",
+                    },
+                    primary: {
+                        DEFAULT: "var(--primary)",
+                        foreground: "var(--primary-foreground)",
+                    },
+                    secondary: {
+                        DEFAULT: "var(--secondary)",
+                        foreground: "var(--secondary-foreground)",
+                    },
+                    muted: {
+                        DEFAULT: "var(--muted)",
+                        foreground: "var(--muted-foreground)",
+                    },
+                    accent: {
+                        DEFAULT: "var(--accent)",
+                        foreground: "var(--accent-foreground)",
+                    },
+                    destructive: {
+                        DEFAULT: "var(--destructive)",
+                        foreground: "var(--destructive-foreground)",
+                    },
+                    border: "var(--border)",
+                    input: "var(--input)",
+                    ring: "var(--ring)",
+                },
+                fontFamily: {
+                    sans: ["Inter", "system-ui", "sans-serif"],
+                }
+            },
+        }
+    };
+    </script>
+    <style>
+        :root {
+            --background: hsl(0 0% 100%);
+            --foreground: hsl(222 14% 20%);
+            --card: hsl(0 0% 100%);
+            --card-foreground: hsl(222 14% 20%);
+            --popover: hsl(0 0% 100%);
+            --popover-foreground: hsl(222 14% 20%);
+            --primary: hsl(213 100% 50%);
+            --primary-foreground: hsl(0 0% 100%);
+            --secondary: hsl(210 11% 97%);
+            --secondary-foreground: hsl(222 14% 20%);
+            --muted: hsl(210 11% 97%);
+            --muted-foreground: hsl(215 16% 47%);
+            --accent: hsl(213 100% 96%);
+            --accent-foreground: hsl(213 100% 50%);
+            --destructive: hsl(0 84% 60%);
+            --destructive-foreground: hsl(0 0% 100%);
+            --border: hsl(214 32% 91%);
+            --input: hsl(214 32% 91%);
+            --ring: hsl(213 100% 50%);
+            --radius: 0.5rem;
+        }
+        
+        * {
+            scroll-behavior: smooth;
+        }
+        
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+        
+        .hero-bg {
+            background-image: linear-gradient(rgba(0, 127, 255, 0.1), rgba(0, 127, 255, 0.2)), url('https://i.imgur.com/6na9LR8.jpeg');
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
+        }
+        
+        .property-card {
+            transition: all 0.3s ease;
+        }
+        
+        .property-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 20px 40px rgba(0, 127, 255, 0.1);
+        }
+        
+        .sticky-header {
+            backdrop-filter: blur(10px);
+            background-color: rgba(255, 255, 255, 0.95);
+        }
+        
+        .lightbox {
+            display: none;
+            position: fixed;
+            z-index: 9999;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.9);
+        }
+        
+        .lightbox.active {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .category-card {
+            position: relative;
+            overflow: hidden;
+            transition: all 0.3s ease;
+        }
+        
+        .category-card:hover {
+            transform: scale(1.02);
+        }
+        
+        .category-overlay {
+            background: linear-gradient(45deg, rgba(0, 127, 255, 0.8), rgba(0, 127, 255, 0.6));
+        }
+        
+        @media (max-width: 768px) {
+            .hero-bg {
+                background-attachment: scroll;
+            }
+        }
+    </style>
+</head>
+<body class="bg-background text-foreground">
+    <!-- @COMPONENT: StickyHeader -->
+    <header class="sticky top-0 z-50 sticky-header border-b border-border">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex items-center justify-between h-16">
+                <!-- @COMPONENT: Logo -->
+                <div class="flex items-center space-x-4">
+                    <img src="https://i.imgur.com/42h36DK.png" alt="Island Properties Logo" class="h-10 w-auto">
+                    <h1 class="text-xl font-bold text-primary hidden sm:block">Island Properties</h1>
+                </div>
+                
+                <!-- @COMPONENT: MainNavigation -->
+                <nav class="hidden md:flex items-center space-x-8">
+                    <a href="#home" class="text-foreground hover:text-primary transition-colors font-medium">Home</a>
+                    <a href="#listings" class="text-foreground hover:text-primary transition-colors font-medium">Listings</a>
+                    <a href="#about" class="text-foreground hover:text-primary transition-colors font-medium">About</a>
+                    <a href="#contact" class="text-foreground hover:text-primary transition-colors font-medium">Contact</a>
+                </nav>
+                
+                <!-- @COMPONENT: MobileMenuToggle -->
+                <button class="md:hidden p-2 text-foreground hover:text-primary" id="mobile-menu-toggle">
+                    <i class="fas fa-bars text-xl"></i>
+                </button>
+            </div>
+            
+            <!-- @COMPONENT: SubNavigation -->
+            <div class="flex items-center justify-between pb-3 pt-2">
+                <button class="bg-secondary hover:bg-primary hover:text-primary-foreground px-6 py-2 rounded-md font-medium transition-colors">
+                    <i class="fas fa-users mr-2"></i>Brokers
+                </button>
+                <button class="bg-primary text-primary-foreground hover:bg-blue-600 px-6 py-2 rounded-md font-medium transition-colors">
+                    <i class="fas fa-home mr-2"></i>Listings
+                </button>
+            </div>
+        </div>
+    </header>
+    <!-- @END_COMPONENT: StickyHeader -->
+
+    <!-- @COMPONENT: HeroSection -->
+    <section id="home" class="hero-bg min-h-screen flex items-center justify-center relative">
+        <div class="text-center text-white max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+            <h2 class="text-5xl md:text-7xl font-bold mb-6 leading-tight">
+                Your Dream Property<br>
+                <span class="text-blue-200">Awaits</span>
+            </h2>
+            <p class="text-xl md:text-2xl mb-8 text-blue-100 font-light">
+                Discover premium real estate opportunities in paradise
+            </p>
+            <div class="flex flex-col sm:flex-row gap-4 justify-center">
+                <button class="bg-primary hover:bg-blue-600 text-white px-8 py-4 rounded-md font-semibold text-lg transition-colors">
+                    Explore Properties
+                </button>
+                <button class="bg-white hover:bg-gray-50 text-primary px-8 py-4 rounded-md font-semibold text-lg transition-colors">
+                    Schedule Viewing
+                </button>
+            </div>
+        </div>
+        
+        <!-- Scroll indicator -->
+        <div class="absolute bottom-8 left-1/2 transform -translate-x-1/2 animate-bounce">
+            <i class="fas fa-chevron-down text-white text-2xl"></i>
+        </div>
+    </section>
+    <!-- @END_COMPONENT: HeroSection -->
+
+    <!-- @COMPONENT: HotListingsSection -->
+    <section id="hot-listings" class="py-20 bg-background">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-16">
+                <h3 class="text-4xl font-bold text-foreground mb-4">Hot Listings</h3>
+                <p class="text-muted-foreground text-lg max-w-2xl mx-auto">
+                    These exceptional properties are in high demand. Don't miss your chance to own a piece of paradise.
+                </p>
+            </div>
+            
+            <!-- @MAP: hotListings.map(property => ( -->
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-12">
+                <!-- Property 1 -->
+                <div class="property-card bg-card rounded-lg overflow-hidden shadow-lg border border-border" data-mock="true">
+                    <!-- Luxury beachfront villa with infinity pool overlooking crystal blue waters -->
+                    <img src="https://images.unsplash.com/photo-1613977257363-707ba9348227?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&h=600" 
+                         alt="Luxury Beachfront Villa" 
+                         class="w-full h-80 object-cover cursor-pointer property-image">
+                    <div class="p-6">
+                        <div class="flex items-center justify-between mb-4">
+                            <span class="bg-red-100 text-red-800 text-sm font-medium px-3 py-1 rounded-full">HOT</span>
+                            <span class="text-2xl font-bold text-primary" data-bind="property.price">$2,500,000</span>
+                        </div>
+                        <h4 class="text-xl font-semibold text-card-foreground mb-2" data-bind="property.title">Luxury Beachfront Villa</h4>
+                        <p class="text-muted-foreground mb-4" data-bind="property.location">
+                            <i class="fas fa-map-marker-alt mr-2"></i>Sunset Beach, Paradise Island
+                        </p>
+                        <div class="flex items-center gap-4 text-sm text-muted-foreground mb-4">
+                            <span data-bind="property.bedrooms"><i class="fas fa-bed mr-1"></i>5 Beds</span>
+                            <span data-bind="property.bathrooms"><i class="fas fa-bath mr-1"></i>4 Baths</span>
+                            <span data-bind="property.sqft"><i class="fas fa-home mr-1"></i>4,200 sq ft</span>
+                        </div>
+                        <p class="text-muted-foreground mb-6" data-bind="property.description">
+                            Stunning oceanfront property with private beach access, infinity pool, and panoramic views of the Pacific.
+                        </p>
+                        <button class="w-full bg-primary hover:bg-blue-600 text-primary-foreground py-3 rounded-md font-medium transition-colors">
+                            View Details
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Property 2 -->
+                <div class="property-card bg-card rounded-lg overflow-hidden shadow-lg border border-border" data-mock="true">
+                    <!-- Modern architectural home with floor-to-ceiling windows and minimalist design -->
+                    <img src="https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&h=600" 
+                         alt="Modern Architectural Home" 
+                         class="w-full h-80 object-cover cursor-pointer property-image">
+                    <div class="p-6">
+                        <div class="flex items-center justify-between mb-4">
+                            <span class="bg-red-100 text-red-800 text-sm font-medium px-3 py-1 rounded-full">HOT</span>
+                            <span class="text-2xl font-bold text-primary" data-bind="property.price">$1,850,000</span>
+                        </div>
+                        <h4 class="text-xl font-semibold text-card-foreground mb-2" data-bind="property.title">Modern Architectural Marvel</h4>
+                        <p class="text-muted-foreground mb-4" data-bind="property.location">
+                            <i class="fas fa-map-marker-alt mr-2"></i>Hillside Heights, Vista Valley
+                        </p>
+                        <div class="flex items-center gap-4 text-sm text-muted-foreground mb-4">
+                            <span data-bind="property.bedrooms"><i class="fas fa-bed mr-1"></i>4 Beds</span>
+                            <span data-bind="property.bathrooms"><i class="fas fa-bath mr-1"></i>3 Baths</span>
+                            <span data-bind="property.sqft"><i class="fas fa-home mr-1"></i>3,800 sq ft</span>
+                        </div>
+                        <p class="text-muted-foreground mb-6" data-bind="property.description">
+                            Award-winning contemporary design with smart home technology, sustainable features, and breathtaking valley views.
+                        </p>
+                        <button class="w-full bg-primary hover:bg-blue-600 text-primary-foreground py-3 rounded-md font-medium transition-colors">
+                            View Details
+                        </button>
+                    </div>
+                </div>
+            </div>
+            <!-- @END_MAP )) -->
+            
+            <div class="text-center">
+                <button class="bg-secondary hover:bg-primary hover:text-primary-foreground px-8 py-3 rounded-md font-semibold transition-colors">
+                    See More Hot Listings
+                </button>
+            </div>
+        </div>
+    </section>
+    <!-- @END_COMPONENT: HotListingsSection -->
+
+    <!-- @COMPONENT: FeaturedListingsSection -->
+    <section id="featured-listings" class="py-20 bg-muted">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-16">
+                <h3 class="text-4xl font-bold text-foreground mb-4">Featured Properties</h3>
+                <p class="text-muted-foreground text-lg max-w-2xl mx-auto">
+                    Handpicked premium properties that represent the finest in luxury living and investment opportunities.
+                </p>
+            </div>
+            
+            <!-- @MAP: featuredListings.map(property => ( -->
+            <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-6 mb-12">
+                <!-- Featured Property 1 -->
+                <div class="property-card bg-card rounded-lg overflow-hidden shadow-lg border border-border" data-mock="true">
+                    <!-- Elegant penthouse with city skyline views and modern furnishings -->
+                    <img src="https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&h=300" 
+                         alt="City Penthouse" 
+                         class="w-full h-48 object-cover cursor-pointer property-image">
+                    <div class="p-4">
+                        <div class="flex items-center justify-between mb-3">
+                            <span class="bg-blue-100 text-blue-800 text-xs font-medium px-2 py-1 rounded-full">FEATURED</span>
+                            <span class="text-lg font-bold text-primary" data-bind="property.price">$875,000</span>
+                        </div>
+                        <h4 class="text-lg font-semibold text-card-foreground mb-2" data-bind="property.title">Downtown Penthouse</h4>
+                        <p class="text-muted-foreground text-sm mb-3" data-bind="property.location">
+                            <i class="fas fa-map-marker-alt mr-1"></i>Metropolitan District
+                        </p>
+                        <div class="flex items-center gap-3 text-xs text-muted-foreground mb-3">
+                            <span data-bind="property.bedrooms"><i class="fas fa-bed mr-1"></i>3 Beds</span>
+                            <span data-bind="property.bathrooms"><i class="fas fa-bath mr-1"></i>2 Baths</span>
+                        </div>
+                        <button class="w-full bg-primary hover:bg-blue-600 text-primary-foreground py-2 rounded-md font-medium text-sm transition-colors">
+                            View Details
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Featured Property 2 -->
+                <div class="property-card bg-card rounded-lg overflow-hidden shadow-lg border border-border" data-mock="true">
+                    <!-- Vast agricultural land with rolling hills and farming infrastructure -->
+                    <img src="https://images.unsplash.com/photo-1625246333195-78d9c38ad449?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&h=300" 
+                         alt="Agricultural Land" 
+                         class="w-full h-48 object-cover cursor-pointer property-image">
+                    <div class="p-4">
+                        <div class="flex items-center justify-between mb-3">
+                            <span class="bg-blue-100 text-blue-800 text-xs font-medium px-2 py-1 rounded-full">FEATURED</span>
+                            <span class="text-lg font-bold text-primary" data-bind="property.price">$320,000</span>
+                        </div>
+                        <h4 class="text-lg font-semibold text-card-foreground mb-2" data-bind="property.title">Prime Agricultural Land</h4>
+                        <p class="text-muted-foreground text-sm mb-3" data-bind="property.location">
+                            <i class="fas fa-map-marker-alt mr-1"></i>Green Valley Farm District
+                        </p>
+                        <div class="flex items-center gap-3 text-xs text-muted-foreground mb-3">
+                            <span data-bind="property.hectares"><i class="fas fa-seedling mr-1"></i>15 Hectares</span>
+                            <span data-bind="property.access"><i class="fas fa-road mr-1"></i>Road Access</span>
+                        </div>
+                        <button class="w-full bg-primary hover:bg-blue-600 text-primary-foreground py-2 rounded-md font-medium text-sm transition-colors">
+                            View Details
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Featured Property 3 -->
+                <div class="property-card bg-card rounded-lg overflow-hidden shadow-lg border border-border" data-mock="true">
+                    <!-- Modern office building with glass facade and urban setting -->
+                    <img src="https://images.unsplash.com/photo-1497366216548-37526070297c?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&h=300" 
+                         alt="Commercial Building" 
+                         class="w-full h-48 object-cover cursor-pointer property-image">
+                    <div class="p-4">
+                        <div class="flex items-center justify-between mb-3">
+                            <span class="bg-blue-100 text-blue-800 text-xs font-medium px-2 py-1 rounded-full">FEATURED</span>
+                            <span class="text-lg font-bold text-primary" data-bind="property.price">$2,200,000</span>
+                        </div>
+                        <h4 class="text-lg font-semibold text-card-foreground mb-2" data-bind="property.title">Commercial Office Building</h4>
+                        <p class="text-muted-foreground text-sm mb-3" data-bind="property.location">
+                            <i class="fas fa-map-marker-alt mr-1"></i>Business Central Plaza
+                        </p>
+                        <div class="flex items-center gap-3 text-xs text-muted-foreground mb-3">
+                            <span data-bind="property.sqm"><i class="fas fa-building mr-1"></i>1,200 sqm</span>
+                            <span data-bind="property.parking"><i class="fas fa-parking mr-1"></i>25 Spaces</span>
+                        </div>
+                        <button class="w-full bg-primary hover:bg-blue-600 text-primary-foreground py-2 rounded-md font-medium text-sm transition-colors">
+                            View Details
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Featured Property 4 -->
+                <div class="property-card bg-card rounded-lg overflow-hidden shadow-lg border border-border" data-mock="true">
+                    <!-- Pristine tropical beach with white sand and turquoise waters -->
+                    <img src="https://images.unsplash.com/photo-1559827260-dc66d52bef19?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&h=300" 
+                         alt="Beach Property" 
+                         class="w-full h-48 object-cover cursor-pointer property-image">
+                    <div class="p-4">
+                        <div class="flex items-center justify-between mb-3">
+                            <span class="bg-blue-100 text-blue-800 text-xs font-medium px-2 py-1 rounded-full">FEATURED</span>
+                            <span class="text-lg font-bold text-primary" data-bind="property.price">$1,950,000</span>
+                        </div>
+                        <h4 class="text-lg font-semibold text-card-foreground mb-2" data-bind="property.title">Private Beach Paradise</h4>
+                        <p class="text-muted-foreground text-sm mb-3" data-bind="property.location">
+                            <i class="fas fa-map-marker-alt mr-1"></i>Crystal Cove Beach
+                        </p>
+                        <div class="flex items-center gap-3 text-xs text-muted-foreground mb-3">
+                            <span data-bind="property.beachfront"><i class="fas fa-water mr-1"></i>200m Beach</span>
+                            <span data-bind="property.land"><i class="fas fa-expand-arrows-alt mr-1"></i>5,000 sqm</span>
+                        </div>
+                        <button class="w-full bg-primary hover:bg-blue-600 text-primary-foreground py-2 rounded-md font-medium text-sm transition-colors">
+                            View Details
+                        </button>
+                    </div>
+                </div>
+            </div>
+            <!-- @END_MAP )) -->
+            
+            <div class="text-center">
+                <button class="bg-secondary hover:bg-primary hover:text-primary-foreground px-8 py-3 rounded-md font-semibold transition-colors">
+                    See More Featured Properties
+                </button>
+            </div>
+        </div>
+    </section>
+    <!-- @END_COMPONENT: FeaturedListingsSection -->
+
+    <!-- @COMPONENT: PropertyCategoriesSection -->
+    <section id="listings" class="py-20 bg-background">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-16">
+                <h3 class="text-4xl font-bold text-foreground mb-4">Browse by Category</h3>
+                <p class="text-muted-foreground text-lg max-w-2xl mx-auto">
+                    Explore our diverse portfolio of premium properties across different categories.
+                </p>
+            </div>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-12">
+                <!-- Houses Category -->
+                <div class="category-card rounded-lg overflow-hidden shadow-lg cursor-pointer group">
+                    <!-- Traditional suburban home with manicured lawn and family-friendly design -->
+                    <div class="relative h-64 bg-cover bg-center" style="background-image: url('https://images.unsplash.com/photo-1568605114967-8130f3a36994?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&h=400')">
+                        <div class="absolute inset-0 category-overlay opacity-75 group-hover:opacity-90 transition-opacity"></div>
+                        <div class="absolute inset-0 flex items-center justify-center">
+                            <div class="text-center text-white">
+                                <i class="fas fa-home text-4xl mb-3"></i>
+                                <h4 class="text-2xl font-bold mb-2">Houses</h4>
+                                <p class="text-sm opacity-90">Family homes & luxury residences</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Land Category -->
+                <div class="category-card rounded-lg overflow-hidden shadow-lg cursor-pointer group">
+                    <!-- Expansive green landscape with rolling hills perfect for development -->
+                    <div class="relative h-64 bg-cover bg-center" style="background-image: url('https://images.unsplash.com/photo-1500382017468-9049fed747ef?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&h=400')">
+                        <div class="absolute inset-0 category-overlay opacity-75 group-hover:opacity-90 transition-opacity"></div>
+                        <div class="absolute inset-0 flex items-center justify-center">
+                            <div class="text-center text-white">
+                                <i class="fas fa-mountain text-4xl mb-3"></i>
+                                <h4 class="text-2xl font-bold mb-2">Land</h4>
+                                <p class="text-sm opacity-90">Development & investment lots</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Condos Category -->
+                <div class="category-card rounded-lg overflow-hidden shadow-lg cursor-pointer group">
+                    <!-- Sleek modern condominium complex with contemporary architecture -->
+                    <div class="relative h-64 bg-cover bg-center" style="background-image: url('https://images.unsplash.com/photo-1545324418-cc1a3fa10c00?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&h=400')">
+                        <div class="absolute inset-0 category-overlay opacity-75 group-hover:opacity-90 transition-opacity"></div>
+                        <div class="absolute inset-0 flex items-center justify-center">
+                            <div class="text-center text-white">
+                                <i class="fas fa-building text-4xl mb-3"></i>
+                                <h4 class="text-2xl font-bold mb-2">Condos</h4>
+                                <p class="text-sm opacity-90">Urban living & high-rise units</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Beach Category -->
+                <div class="category-card rounded-lg overflow-hidden shadow-lg cursor-pointer group">
+                    <!-- Stunning beachfront view with crystal clear waters and white sand -->
+                    <div class="relative h-64 bg-cover bg-center" style="background-image: url('https://images.unsplash.com/photo-1507525428034-b723cf961d3e?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&h=400')">
+                        <div class="absolute inset-0 category-overlay opacity-75 group-hover:opacity-90 transition-opacity"></div>
+                        <div class="absolute inset-0 flex items-center justify-center">
+                            <div class="text-center text-white">
+                                <i class="fas fa-water text-4xl mb-3"></i>
+                                <h4 class="text-2xl font-bold mb-2">Beach</h4>
+                                <p class="text-sm opacity-90">Waterfront & oceanview properties</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Commercial Category -->
+                <div class="category-card rounded-lg overflow-hidden shadow-lg cursor-pointer group">
+                    <!-- Modern commercial district with office towers and business centers -->
+                    <div class="relative h-64 bg-cover bg-center" style="background-image: url('https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&h=400')">
+                        <div class="absolute inset-0 category-overlay opacity-75 group-hover:opacity-90 transition-opacity"></div>
+                        <div class="absolute inset-0 flex items-center justify-center">
+                            <div class="text-center text-white">
+                                <i class="fas fa-briefcase text-4xl mb-3"></i>
+                                <h4 class="text-2xl font-bold mb-2">Commercial</h4>
+                                <p class="text-sm opacity-90">Office & retail spaces</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Agriculture Category -->
+                <div class="category-card rounded-lg overflow-hidden shadow-lg cursor-pointer group">
+                    <!-- Fertile farmland with crops and agricultural infrastructure -->
+                    <div class="relative h-64 bg-cover bg-center" style="background-image: url('https://images.unsplash.com/photo-1574323347407-f5e1ad6d020b?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&h=400')">
+                        <div class="absolute inset-0 category-overlay opacity-75 group-hover:opacity-90 transition-opacity"></div>
+                        <div class="absolute inset-0 flex items-center justify-center">
+                            <div class="text-center text-white">
+                                <i class="fas fa-seedling text-4xl mb-3"></i>
+                                <h4 class="text-2xl font-bold mb-2">Agriculture</h4>
+                                <p class="text-sm opacity-90">Farms & agricultural land</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Hot Listings Category -->
+                <div class="category-card rounded-lg overflow-hidden shadow-lg cursor-pointer group">
+                    <!-- Exclusive luxury property with premium features and stunning views -->
+                    <div class="relative h-64 bg-cover bg-center" style="background-image: url('https://images.unsplash.com/photo-1600585154340-be6161a56a0c?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&h=400')">
+                        <div class="absolute inset-0 bg-gradient-to-br from-red-500/80 to-red-600/80 opacity-75 group-hover:opacity-90 transition-opacity"></div>
+                        <div class="absolute inset-0 flex items-center justify-center">
+                            <div class="text-center text-white">
+                                <i class="fas fa-fire text-4xl mb-3"></i>
+                                <h4 class="text-2xl font-bold mb-2">Hot Listings</h4>
+                                <p class="text-sm opacity-90">High demand properties</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Featured Category -->
+                <div class="category-card rounded-lg overflow-hidden shadow-lg cursor-pointer group">
+                    <!-- Prestigious luxury estate with elegant architecture and landscaping -->
+                    <div class="relative h-64 bg-cover bg-center" style="background-image: url('https://images.unsplash.com/photo-1600047509807-ba8f99d2cdde?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&h=400')">
+                        <div class="absolute inset-0 bg-gradient-to-br from-yellow-500/80 to-yellow-600/80 opacity-75 group-hover:opacity-90 transition-opacity"></div>
+                        <div class="absolute inset-0 flex items-center justify-center">
+                            <div class="text-center text-white">
+                                <i class="fas fa-star text-4xl mb-3"></i>
+                                <h4 class="text-2xl font-bold mb-2">Featured</h4>
+                                <p class="text-sm opacity-90">Handpicked premium properties</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="text-center">
+                <button class="bg-primary hover:bg-blue-600 text-primary-foreground px-12 py-4 rounded-md font-bold text-lg transition-colors">
+                    See All Listings
+                </button>
+            </div>
+        </div>
+    </section>
+    <!-- @END_COMPONENT: PropertyCategoriesSection -->
+
+    <!-- @COMPONENT: TestimonialsSection -->
+    <section id="testimonials" class="py-20 bg-muted">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-16">
+                <h3 class="text-4xl font-bold text-foreground mb-4">What Our Clients Say</h3>
+                <p class="text-muted-foreground text-lg max-w-2xl mx-auto">
+                    Hear from satisfied customers who found their dream properties with Island Properties.
+                </p>
+            </div>
+            
+            <!-- @MAP: testimonials.map(testimonial => ( -->
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <!-- Testimonial 1 -->
+                <div class="bg-card rounded-lg p-8 shadow-lg border border-border" data-mock="true">
+                    <div class="flex items-center mb-6">
+                        <div class="flex text-yellow-400 mb-2">
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                        </div>
+                    </div>
+                    <p class="text-card-foreground text-lg mb-6 italic" data-bind="testimonial.content">
+                        "Island Properties made our dream of owning a beachfront villa come true. Their expertise and dedication throughout the entire process was exceptional. We couldn't be happier with our new home."
+                    </p>
+                    <div class="flex items-center">
+                        <!-- Professional headshot of satisfied female client -->
+                        <img src="https://pixabay.com/get/gcdedff3c793eb2cff99902b3253db3a1b7981ea98388e06f221f9986aaa68485491a2241d351c5d6c00f40125711513296b7bf5c0ca99f87b781310fb26f25a9_1280.jpg" 
+                             alt="Client photo" 
+                             class="w-12 h-12 rounded-full mr-4 object-cover">
+                        <div>
+                            <p class="font-semibold text-card-foreground" data-bind="testimonial.name">Sarah Johnson</p>
+                            <p class="text-muted-foreground text-sm" data-bind="testimonial.title">Beachfront Villa Owner</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Testimonial 2 -->
+                <div class="bg-card rounded-lg p-8 shadow-lg border border-border" data-mock="true">
+                    <div class="flex items-center mb-6">
+                        <div class="flex text-yellow-400 mb-2">
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                        </div>
+                    </div>
+                    <p class="text-card-foreground text-lg mb-6 italic" data-bind="testimonial.content">
+                        "Professional, reliable, and knowledgeable. The team at Island Properties helped us find the perfect commercial space for our business. Their market insights were invaluable."
+                    </p>
+                    <div class="flex items-center">
+                        <!-- Professional headshot of satisfied male business client -->
+                        <img src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-4.0.3&auto=format&fit=crop&w=100&h=100" 
+                             alt="Client photo" 
+                             class="w-12 h-12 rounded-full mr-4 object-cover">
+                        <div>
+                            <p class="font-semibold text-card-foreground" data-bind="testimonial.name">Michael Chen</p>
+                            <p class="text-muted-foreground text-sm" data-bind="testimonial.title">Business Owner</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Testimonial 3 -->
+                <div class="bg-card rounded-lg p-8 shadow-lg border border-border" data-mock="true">
+                    <div class="flex items-center mb-6">
+                        <div class="flex text-yellow-400 mb-2">
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                        </div>
+                    </div>
+                    <p class="text-card-foreground text-lg mb-6 italic" data-bind="testimonial.content">
+                        "From start to finish, Island Properties exceeded our expectations. They found us the perfect family home in our desired neighborhood. The process was smooth and stress-free."
+                    </p>
+                    <div class="flex items-center">
+                        <!-- Professional headshot of satisfied female family client -->
+                        <img src="https://images.unsplash.com/photo-1438761681033-6461ffad8d80?ixlib=rb-4.0.3&auto=format&fit=crop&w=100&h=100" 
+                             alt="Client photo" 
+                             class="w-12 h-12 rounded-full mr-4 object-cover">
+                        <div>
+                            <p class="font-semibold text-card-foreground" data-bind="testimonial.name">Emily Rodriguez</p>
+                            <p class="text-muted-foreground text-sm" data-bind="testimonial.title">Family Home Buyer</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- @END_MAP )) -->
+        </div>
+    </section>
+    <!-- @END_COMPONENT: TestimonialsSection -->
+
+    <!-- @COMPONENT: CTASection -->
+    <section class="py-20 bg-primary text-primary-foreground">
+        <div class="max-w-4xl mx-auto text-center px-4 sm:px-6 lg:px-8">
+            <h3 class="text-4xl font-bold mb-6">Ready to Find Your Dream Property?</h3>
+            <p class="text-xl mb-8 opacity-90">
+                Let our experienced team help you discover the perfect property that matches your vision and budget.
+            </p>
+            <div class="flex flex-col sm:flex-row gap-4 justify-center">
+                <button class="bg-white text-primary hover:bg-gray-50 px-8 py-4 rounded-md font-semibold text-lg transition-colors">
+                    Start Your Search
+                </button>
+                <button class="border-2 border-white text-white hover:bg-white hover:text-primary px-8 py-4 rounded-md font-semibold text-lg transition-colors">
+                    Schedule Consultation
+                </button>
+            </div>
+        </div>
+    </section>
+    <!-- @END_COMPONENT: CTASection -->
+
+    <!-- @COMPONENT: Footer -->
+    <footer class="bg-foreground text-background py-16">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-8 mb-8">
+                <!-- Company Info -->
+                <div class="col-span-1 md:col-span-2">
+                    <div class="flex items-center space-x-4 mb-6">
+                        <img src="https://i.imgur.com/42h36DK.png" alt="Island Properties Logo" class="h-12 w-auto filter invert">
+                        <h4 class="text-xl font-bold">Island Properties</h4>
+                    </div>
+                    <p class="text-gray-300 mb-6 max-w-md">
+                        Your trusted partner in finding exceptional real estate opportunities. From luxury homes to prime investments, we help you discover properties that exceed expectations.
+                    </p>
+                    <div class="flex space-x-4">
+                        <a href="#" class="text-gray-300 hover:text-white transition-colors">
+                            <i class="fab fa-facebook-f text-xl"></i>
+                        </a>
+                        <a href="#" class="text-gray-300 hover:text-white transition-colors">
+                            <i class="fab fa-twitter text-xl"></i>
+                        </a>
+                        <a href="#" class="text-gray-300 hover:text-white transition-colors">
+                            <i class="fab fa-instagram text-xl"></i>
+                        </a>
+                        <a href="#" class="text-gray-300 hover:text-white transition-colors">
+                            <i class="fab fa-linkedin-in text-xl"></i>
+                        </a>
+                    </div>
+                </div>
+
+                <!-- Quick Links -->
+                <div>
+                    <h5 class="font-semibold mb-6">Quick Links</h5>
+                    <ul class="space-y-3 text-gray-300">
+                        <li><a href="#" class="hover:text-white transition-colors">Home</a></li>
+                        <li><a href="#" class="hover:text-white transition-colors">All Listings</a></li>
+                        <li><a href="#" class="hover:text-white transition-colors">Hot Properties</a></li>
+                        <li><a href="#" class="hover:text-white transition-colors">Featured Listings</a></li>
+                        <li><a href="#" class="hover:text-white transition-colors">About Us</a></li>
+                        <li><a href="#" class="hover:text-white transition-colors">Contact</a></li>
+                    </ul>
+                </div>
+
+                <!-- Contact Info -->
+                <div>
+                    <h5 class="font-semibold mb-6">Contact Info</h5>
+                    <ul class="space-y-3 text-gray-300">
+                        <li class="flex items-start">
+                            <i class="fas fa-map-marker-alt mt-1 mr-3"></i>
+                            <span>123 Paradise Avenue<br>Island City, IC 12345</span>
+                        </li>
+                        <li class="flex items-center">
+                            <i class="fas fa-phone mr-3"></i>
+                            <span>(555) 123-PROP</span>
+                        </li>
+                        <li class="flex items-center">
+                            <i class="fas fa-envelope mr-3"></i>
+                            <span>info@islandproperties.com</span>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- Bottom Section -->
+            <div class="border-t border-gray-700 pt-8 flex flex-col md:flex-row justify-between items-center">
+                <p class="text-gray-300 text-sm mb-4 md:mb-0">
+                    &copy; 2024 Island Properties. All rights reserved.
+                </p>
+                <div class="flex space-x-6 text-sm text-gray-300">
+                    <a href="#" class="hover:text-white transition-colors">Privacy Policy</a>
+                    <a href="#" class="hover:text-white transition-colors">Terms of Service</a>
+                    <a href="#" class="hover:text-white transition-colors">Sitemap</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+    <!-- @END_COMPONENT: Footer -->
+
+    <!-- @COMPONENT: LightboxModal -->
+    <div id="lightbox" class="lightbox">
+        <span class="absolute top-4 right-4 text-white text-4xl cursor-pointer hover:opacity-75 z-10">&times;</span>
+        <img id="lightbox-image" src="" alt="" class="max-w-full max-h-full object-contain">
+    </div>
+    <!-- @END_COMPONENT: LightboxModal -->
+
+    <!-- @COMPONENT: MobileMenu -->
+    <div id="mobile-menu" class="fixed inset-0 bg-background z-50 transform translate-x-full transition-transform md:hidden">
+        <div class="flex items-center justify-between p-4 border-b border-border">
+            <div class="flex items-center space-x-4">
+                <img src="https://i.imgur.com/42h36DK.png" alt="Island Properties Logo" class="h-8 w-auto">
+                <h4 class="text-lg font-bold text-primary">Island Properties</h4>
+            </div>
+            <button id="close-mobile-menu" class="text-foreground hover:text-primary">
+                <i class="fas fa-times text-xl"></i>
+            </button>
+        </div>
+        <nav class="p-4">
+            <ul class="space-y-4">
+                <li><a href="#home" class="block py-3 text-lg text-foreground hover:text-primary transition-colors">Home</a></li>
+                <li><a href="#listings" class="block py-3 text-lg text-foreground hover:text-primary transition-colors">Listings</a></li>
+                <li><a href="#about" class="block py-3 text-lg text-foreground hover:text-primary transition-colors">About</a></li>
+                <li><a href="#contact" class="block py-3 text-lg text-foreground hover:text-primary transition-colors">Contact</a></li>
+            </ul>
+        </nav>
+    </div>
+    <!-- @END_COMPONENT: MobileMenu -->
+
+    <script>
+        (function() {
+            // Mobile menu functionality
+            const mobileMenuToggle = document.getElementById('mobile-menu-toggle');
+            const mobileMenu = document.getElementById('mobile-menu');
+            const closeMobileMenu = document.getElementById('close-mobile-menu');
+
+            function toggleMobileMenu() {
+                mobileMenu.classList.toggle('translate-x-full');
+            }
+
+            mobileMenuToggle?.addEventListener('click', toggleMobileMenu);
+            closeMobileMenu?.addEventListener('click', toggleMobileMenu);
+
+            // Close mobile menu when clicking on links
+            const mobileMenuLinks = mobileMenu.querySelectorAll('a');
+            mobileMenuLinks.forEach(link => {
+                link.addEventListener('click', toggleMobileMenu);
+            });
+
+            // Lightbox functionality
+            const lightbox = document.getElementById('lightbox');
+            const lightboxImage = document.getElementById('lightbox-image');
+            const propertyImages = document.querySelectorAll('.property-image');
+            const closeLightbox = lightbox.querySelector('span');
+
+            propertyImages.forEach(image => {
+                image.addEventListener('click', function() {
+                    lightboxImage.src = this.src;
+                    lightboxImage.alt = this.alt;
+                    lightbox.classList.add('active');
+                });
+            });
+
+            closeLightbox?.addEventListener('click', function() {
+                lightbox.classList.remove('active');
+            });
+
+            lightbox?.addEventListener('click', function(e) {
+                if (e.target === lightbox) {
+                    lightbox.classList.remove('active');
+                }
+            });
+
+            // Smooth scrolling for anchor links
+            document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+                anchor.addEventListener('click', function (e) {
+                    e.preventDefault();
+                    const target = document.querySelector(this.getAttribute('href'));
+                    if (target) {
+                        target.scrollIntoView({
+                            behavior: 'smooth',
+                            block: 'start'
+                        });
+                    }
+                });
+            });
+
+            // Header background opacity on scroll
+            const header = document.querySelector('header');
+            let lastScrollTop = 0;
+
+            window.addEventListener('scroll', function() {
+                const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+                
+                if (scrollTop > 100) {
+                    header.style.backgroundColor = 'rgba(255, 255, 255, 0.98)';
+                } else {
+                    header.style.backgroundColor = 'rgba(255, 255, 255, 0.95)';
+                }
+                
+                lastScrollTop = scrollTop;
+            });
+
+            // Property card interactions
+            const propertyCards = document.querySelectorAll('.property-card');
+            propertyCards.forEach(card => {
+                card.addEventListener('mouseenter', function() {
+                    this.style.transform = 'translateY(-5px)';
+                });
+                
+                card.addEventListener('mouseleave', function() {
+                    this.style.transform = 'translateY(0)';
+                });
+            });
+
+            // Category card interactions
+            const categoryCards = document.querySelectorAll('.category-card');
+            categoryCards.forEach(card => {
+                card.addEventListener('click', function() {
+                    // TODO: Navigate to category page
+                    console.log('Navigate to category:', this.querySelector('h4').textContent);
+                });
+            });
+
+            // Search functionality placeholder
+            function initializeSearch() {
+                // TODO: Implement search and filter functionality
+                console.log('Search functionality to be implemented');
+            }
+
+            // Initialize all functionality
+            document.addEventListener('DOMContentLoaded', function() {
+                initializeSearch();
+                
+                // Add loading states and animations
+                const images = document.querySelectorAll('img');
+                images.forEach(img => {
+                    img.addEventListener('load', function() {
+                        this.style.opacity = '1';
+                    });
+                });
+            });
+
+        })();
+    </script>
+</body>
+</html>

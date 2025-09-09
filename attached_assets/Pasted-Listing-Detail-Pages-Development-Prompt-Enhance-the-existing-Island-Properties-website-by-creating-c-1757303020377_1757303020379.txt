@@ -1,0 +1,241 @@
+Listing Detail Pages Development Prompt
+Enhance the existing Island Properties website by creating comprehensive listing detail pages for each property category. Maintain the modern minimalistic design with large square images and unique fonts.
+Page Structure Requirements
+Individual Listing Page Template
+Create a standardized template (listing-detail.html) that dynamically displays category-specific information:
+Layout Components:
+
+Hero Image Gallery - Large image slideshow (6-12 photos per property)
+Property Header - Title, price, and key highlights in prominent boxes
+Detailed Information Grid - Category-specific fields in clean card layout
+Property Description - Rich text area for comprehensive details
+Location Information - General area description (NO exact coordinates/maps)
+Contact Section - Broker information and inquiry form
+Similar Properties - 3-4 related listings grid
+
+Category-Specific Data Structure
+Houses JSON Structure
+json{
+  "houses": [
+    {
+      "id": "house-001",
+      "title": "Modern 4-Bedroom Villa with Pool",
+      "price": "₱25,000,000",
+      "price_per_sqm": "₱35,000",
+      "location": "Tagbilaran Heights, Bohol",
+      "bedrooms": 4,
+      "bathrooms": 3,
+      "floor_area_sqm": 350,
+      "lot_size_sqm": 800,
+      "year_built": 2020,
+      "property_type": "Single Detached",
+      "parking_spaces": 2,
+      "stories": 2,
+      "kitchen_type": "Modern European Style",
+      "flooring": "Italian Marble & Hardwood",
+      "air_conditioning": "Central AC",
+      "security_features": ["CCTV", "Alarm System", "24/7 Security"],
+      "outdoor_space": "Landscaped Garden with Pool",
+      "swimming_pool": true,
+      "balcony_terrace": "Master Bedroom Balcony",
+      "title_type": "Clean Title",
+      "property_tax": "₱45,000/year",
+      "hoa_fees": "None",
+      "description": "Stunning modern villa featuring contemporary design...",
+      "images": ["house1-1.jpg", "house1-2.jpg", "house1-3.jpg"],
+      "broker_name": "Maria Santos",
+      "broker_phone": "+63 917 123 4567",
+      "broker_email": "maria@islandproperties.ph"
+    }
+  ]
+}
+Land JSON Structure
+json{
+  "land": [
+    {
+      "id": "land-001",
+      "title": "Prime Residential Development Land",
+      "price": "₱8,000,000",
+      "price_per_sqm": "₱4,000",
+      "location": "Panglao Island, Bohol",
+      "total_area_sqm": 2000,
+      "total_area_hectares": 0.2,
+      "land_classification": "Residential",
+      "topography": "Gently Sloping",
+      "road_access": "6-meter concrete road",
+      "utilities_water": "Deep well available",
+      "utilities_electricity": "Meralco connection ready",
+      "utilities_internet": "Fiber optic available",
+      "zoning": "Residential, R1 Classification",
+      "soil_type": "Clay loam, excellent for construction",
+      "flood_history": "No flood history",
+      "development_potential": "Ideal for subdivision or resort",
+      "restrictions": "40% lot coverage maximum",
+      "nearby_amenities": "5 minutes to Alona Beach, 10 minutes to airport",
+      "environmental_clearance": "ECC obtained",
+      "title_type": "Clean Title",
+      "description": "Exceptional development opportunity...",
+      "images": ["land1-1.jpg", "land1-2.jpg", "land1-3.jpg"],
+      "broker_name": "Roberto Cruz",
+      "broker_phone": "+63 917 234 5678",
+      "broker_email": "roberto@islandproperties.ph"
+    }
+  ]
+}
+Condos JSON Structure
+json{
+  "condos": [
+    {
+      "id": "condo-001",
+      "title": "Luxury 2BR Oceanview Penthouse",
+      "price": "₱15,000,000",
+      "location": "Seaside Towers, Tagbilaran City",
+      "bedrooms": 2,
+      "bathrooms": 2,
+      "unit_size_sqm": 120,
+      "floor_level": "25th Floor",
+      "building_name": "Seaside Towers",
+      "parking_slots": 2,
+      "association_dues": "₱8,000/month",
+      "maintenance_fees": "Included in association dues",
+      "building_amenities": ["Infinity Pool", "Gym", "Spa", "Rooftop Garden"],
+      "security": "24/7 Security, CCTV, Card Access",
+      "elevators": "4 High-speed Elevators",
+      "view_type": "Ocean and City View",
+      "balcony": "10sqm Private Balcony",
+      "furnished_status": "Semi-furnished",
+      "pet_policy": "Small pets allowed",
+      "building_age": "3 years old",
+      "title_type": "Condominium Certificate of Title",
+      "description": "Spectacular penthouse unit...",
+      "images": ["condo1-1.jpg", "condo1-2.jpg", "condo1-3.jpg"],
+      "broker_name": "Lisa Fernandez",
+      "broker_phone": "+63 917 345 6789",
+      "broker_email": "lisa@islandproperties.ph"
+    }
+  ]
+}
+Beach Properties JSON Structure
+json{
+  "beach": [
+    {
+      "id": "beach-001",
+      "title": "Private White Sand Beachfront Resort",
+      "price": "₱50,000,000",
+      "location": "Anda, Bohol",
+      "beachfront_meters": 150,
+      "land_size_sqm": 5000,
+      "beach_type": "Pristine White Sand",
+      "water_depth": "Gradual slope, safe for swimming",
+      "tidal_info": "Minimal tidal variation",
+      "access_road": "Concrete road to property",
+      "utilities_water": "Artesian well + municipal supply",
+      "utilities_electricity": "Generator + solar backup",
+      "existing_structures": "5 native cottages, main house",
+      "environmental_permits": "DOT accredited, all permits current",
+      "beach_activities": ["Swimming", "Snorkeling", "Kayaking", "Beach volleyball"],
+      "nearby_attractions": "Lamanoc Island, Cabagnow Cave Pool",
+      "diving_spots": "Excellent house reef for diving",
+      "fishing_rights": "Traditional fishing area",
+      "title_type": "Clean Title",
+      "description": "Exceptional beachfront resort property...",
+      "images": ["beach1-1.jpg", "beach1-2.jpg", "beach1-3.jpg"],
+      "broker_name": "Carlos Mendoza",
+      "broker_phone": "+63 917 456 7890",
+      "broker_email": "carlos@islandproperties.ph"
+    }
+  ]
+}
+Commercial JSON Structure
+json{
+  "commercial": [
+    {
+      "id": "commercial-001",
+      "title": "Prime Commercial Building - City Center",
+      "price": "₱35,000,000",
+      "rental_rate": "₱200,000/month potential",
+      "location": "CPG Avenue, Tagbilaran City",
+      "building_size_sqm": 800,
+      "lot_size_sqm": 400,
+      "commercial_type": "Mixed-use Commercial Building",
+      "zoning": "Commercial Business District",
+      "parking_spaces": 10,
+      "loading_dock": "Rear loading access",
+      "current_income": "₱180,000/month",
+      "foot_traffic": "High - main commercial strip",
+      "visibility": "Prime corner location",
+      "current_tenants": ["Restaurant", "Retail shops", "Office spaces"],
+      "lease_terms": "Various terms, 3-10 years",
+      "renovation_needed": "Minimal - well-maintained",
+      "expansion_potential": "Can add 2 more floors",
+      "building_age": "8 years old",
+      "title_type": "Clean Title",
+      "description": "Excellent investment property...",
+      "images": ["commercial1-1.jpg", "commercial1-2.jpg", "commercial1-3.jpg"],
+      "broker_name": "Elena Rodriguez",
+      "broker_phone": "+63 917 567 8901",
+      "broker_email": "elena@islandproperties.ph"
+    }
+  ]
+}
+Agriculture JSON Structure
+json{
+  "agriculture": [
+    {
+      "id": "agriculture-001",
+      "title": "Productive Coconut Plantation with Processing",
+      "price": "₱12,000,000",
+      "price_per_hectare": "₱1,200,000",
+      "location": "Carmen, Bohol",
+      "land_size_hectares": 10,
+      "soil_type": "Rich alluvial soil, excellent drainage",
+      "current_crops": "Mature coconut trees (500+ trees)",
+      "irrigation_system": "Natural spring + irrigation channels",
+      "equipment_included": ["Copra dryer", "Processing equipment", "Farm tools"],
+      "road_access": "All-weather farm-to-market road",
+      "storage_facilities": "2 large storage warehouses",
+      "harvest_history": "Consistent 15,000 nuts/month average",
+      "organic_certification": "Organic certified by OCCP",
+      "worker_housing": "Caretaker house + 3 worker quarters",
+      "market_access": "Direct buyers, 30 minutes to port",
+      "climate_conditions": "Ideal tropical climate",
+      "water_source": "Natural spring, year-round flow",
+      "title_type": "Agricultural Free Patent",
+      "description": "Fully operational coconut plantation...",
+      "images": ["agriculture1-1.jpg", "agriculture1-2.jpg", "agriculture1-3.jpg"],
+      "broker_name": "Ricardo Villanueva",
+      "broker_phone": "+63 917 678 9012",
+      "broker_email": "ricardo@islandproperties.ph"
+    }
+  ]
+}
+Technical Implementation Requirements
+JavaScript Functionality
+
+Create dynamic page loading based on property ID from URL parameters
+Implement image gallery with navigation (previous/next, thumbnails)
+Build inquiry form with validation
+Add similar properties recommendation logic
+
+CSS Styling Requirements
+
+Maintain consistent grid system across all categories
+Responsive design for mobile/tablet viewing
+Hover effects on images and interactive elements
+Clean typography hierarchy for property details
+
+Navigation Integration
+
+Update existing category pages to link to individual listings
+Add breadcrumb navigation (Home > Category > Property Name)
+Include "Back to [Category] Listings" functionality
+Cross-link related properties
+
+Contact Form Features
+
+Property inquiry form with auto-populated property details
+Broker contact information display
+Form validation and submission handling
+Success/error message display
+
+Create sample properties (1-2 per category) with placeholder images and implement the dynamic listing system. Ensure all navigation flows work seamlessly from category pages to individual listings and back.

@@ -1,0 +1,140 @@
+Website Development Prompt
+Create a modern, minimalistic real estate website called "Island Properties" using HTML, CSS, and JavaScript. with the following specifications:
+Design Requirements
+Modern minimalistic aesthetic with clean lines and plenty of white space (azure is my logo color so try to match similar matching colors)
+Large square images with no borders or frames
+Unique custom font (use Google Fonts - suggest Poppins or Inter)
+Sticky header that remains visible while scrolling
+Mobile-responsive design
+Smooth scrolling between sections
+Page Structure & Navigation
+Header (Sticky)
+Logo: "Island Properties" (left side) “https://i.imgur.com/42h36DK.png"
+Main Navigation: Home | Listings | About | Contact
+Below header Upper Left Button: "Brokers"
+Below header Upper Right Button: "Listings"
+Homepage Layout
+Hero Section: Full-screen background image (https://i.imgur.com/6na9LR8.jpeg)
+Hot Listings Section: 2 properties in grid, "See More Hot Listings" button
+Featured Listings Section: 4 properties in grid, "See More Featured" button
+See All Listings: Large centered button
+Testimonials Section: 3-4 testimonial cards
+Master Listings Page
+Category selection grid with large square image boxes:
+Hot Listings
+Featured
+Houses
+Land
+Condos
+Beach
+Commercial
+Agriculture
+Property Category Specifications (JSON Structure)
+{
+  "houses": {
+    "required_fields": [
+      "title", "price", "location", "bedrooms", "bathrooms", 
+      "square_feet", "lot_size", "year_built", "property_type",
+      "description", "features", "images", "contact_info"
+    ],
+    "optional_fields": [
+      "garage", "pool", "garden", "security_features", 
+      "nearby_amenities", "HOA_fees", "property_tax"
+    ]
+  },
+  "land": {
+    "required_fields": [
+      "title", "price", "location", "lot_size_sqm", "land_classification",
+      "topography", "road_access", "utilities_available", 
+      "zoning", "description", "images", "contact_info"
+    ],
+    "optional_fields": [
+      "soil_type", "water_source", "flood_history", 
+      "development_potential", "restrictions"
+    ]
+  },
+  "condos": {
+    "required_fields": [
+      "title", "price", "location", "bedrooms", "bathrooms",
+      "square_feet", "floor_level", "building_amenities",
+      "HOA_fees", "parking_slots", "description", "images", "contact_info"
+    ],
+    "optional_fields": [
+      "balcony", "city_view", "ocean_view", "furnished_status",
+      "pet_policy", "building_age", "security_deposit"
+    ]
+  },
+  "beach": {
+    "required_fields": [
+      "title", "price", "location", "beachfront_meters", "land_size_sqm",
+      "beach_type", "water_access", "existing_structures",
+      "accessibility", "description", "images", "contact_info"
+    ],
+    "optional_fields": [
+      "tide_information", "beach_activities", "nearby_resorts",
+      "diving_spots", "fishing_rights", "environmental_clearances"
+    ]
+  },
+  "commercial": {
+    "required_fields": [
+      "title", "price", "location", "building_size_sqm", "lot_size_sqm",
+      "commercial_type", "zoning_classification", "parking_spaces",
+      "monthly_rental_potential", "description", "images", "contact_info"
+    ],
+    "optional_fields": [
+      "current_tenants", "lease_terms", "renovation_needed",
+      "foot_traffic", "competitor_analysis", "growth_potential"
+    ]
+  },
+  "agriculture": {
+    "required_fields": [
+      "title", "price", "location", "land_size_hectares", "soil_type",
+      "current_crops", "irrigation_system", "farm_equipment_included",
+      "road_access", "description", "images", "contact_info"
+    ],
+    "optional_fields": [
+      "harvest_history", "organic_certification", "storage_facilities",
+      "worker_housing", "market_access", "climate_conditions"
+    ]
+  }
+}
+Functional Requirements
+Navigation System
+All menu items must link to corresponding pages
+Smooth page transitions
+Breadcrumb navigation on listing pages
+Back to listings functionality
+Interactive Elements
+Hover effects on images and buttons
+Image galleries with lightbox functionality
+Responsive grid layouts that adapt to screen size
+Search and filter functionality (basic)
+Sample Content
+Create placeholder content for:
+6 sample properties (1 per category)
+3 testimonials
+Company information for About page
+Contact form for Contact page
+File Structure
+/
+├── index.html (Homepage)
+├── listings.html (Master listings page)
+├── houses.html
+├── land.html  
+├── condos.html
+├── beach.html
+├── commercial.html
+├── agriculture.html
+├── about.html
+├── contact.html
+├── style.css
+├── script.js
+└── images/ (placeholder images)
+Technical Specifications
+Use CSS Grid and Flexbox for layouts
+Implement CSS custom properties for consistent theming
+JavaScript for navigation, image galleries, and basic interactions
+Ensure fast loading with optimized images
+Include meta tags for SEO
+Add favicon and touch icons
+Build this as a complete, functional prototype with all navigation working between pages. Focus on the visual design and user experience first - we'll add backend functionality later.

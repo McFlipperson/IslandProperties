@@ -22,7 +22,16 @@ export default function Home() {
   });
 const { data: blogPosts = [] } = useQuery<BlogPost[]>({
   queryKey: ["/api/blog-posts"],
+  queryFn: async () => {
+    const response = await fetch("/api/blog-posts");
+    if (!response.ok) {
+      throw new Error("Failed to fetch blog posts");
+    }
+    return response.json();
+  },
 });
+console.log("Blog posts data:", blogPosts);
+console.log("Blog posts length:", blogPosts?.length);
 
   return (
     <div className="min-h-screen bg-background">
@@ -78,6 +87,7 @@ const { data: blogPosts = [] } = useQuery<BlogPost[]>({
           </div>
         </div>
       </section>
+{/* Blog Section */}
 
       {/* Featured Properties Section */}
       <section className="py-20 bg-muted">
@@ -106,7 +116,39 @@ const { data: blogPosts = [] } = useQuery<BlogPost[]>({
           </div>
         </div>
       </section>
-
+{/* Blog Section */}
+<section className="py-20 bg-background">
+  <div className="container mx-auto px-6">
+    <div className="text-center mb-16">
+      <h2 className="text-4xl font-bold text-foreground mb-4">Latest from Our Blog</h2>
+      <p className="text-xl text-muted-foreground">
+        Stay updated with market insights and property news
+      </p>
+    </div>
+    
+    <div className="grid md:grid-cols-3 gap-8 mb-12">
+      {blogPosts.slice(0, 3).map((post) => (
+        <BlogCard key={post.id} post={post} />
+      ))}
+    </div>
+    
+    {blogPosts.length > 3 && (
+      <div className="text-center">
+        <Link href="/blog">
+          <Button className="btn-primary text-primary-foreground px-8 py-3 font-semibold">
+            View All Posts
+          </Button>
+        </Link>
+      </div>
+    )}
+    
+    {blogPosts.length === 0 && (
+      <div className="text-center">
+        <p className="text-muted-foreground">No blog posts available yet.</p>
+      </div>
+    )}
+  </div>
+</section>
       {/* See All Listings Section */}
       <section className="py-20 bg-background">
         <div className="container mx-auto px-6 text-center">

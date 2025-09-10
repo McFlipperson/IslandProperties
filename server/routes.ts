@@ -114,16 +114,20 @@ export async function registerRoutes(app: Express): Promise<Server> {
 
   // Testimonials API
   // Blog Posts API
-  app.get("/api/blog-posts", async (_req, res) => {
-    try {
-      const allPosts = await storage.getAllBlogPosts();
-      // Only return published posts for public API
-      const publishedPosts = allPosts.filter(post => post.status === 'published');
-      res.json(publishedPosts);
-    } catch (error) {
-      res.status(500).json({ error: "Failed to fetch blog posts" });
+app.get("/api/blog-posts", async (_req, res) => {
+  try {
+    const allPosts = await storage.getAllBlogPosts();
+    console.log("DEBUG: All posts count:", allPosts.length);
+    if (allPosts.length > 0) {
+      console.log("DEBUG: First post status:", allPosts[0].status);
+      console.log("DEBUG: First post title:", allPosts[0].title);
     }
-  });
+    res.json(allPosts);
+  } catch (error) {
+    console.error("Blog posts error:", error);
+    res.status(500).json({ error: "Failed to fetch blog posts" });
+  }
+});
 
   app.get("/api/admin/blog-posts", adminAuth, async (_req, res) => {
     try {

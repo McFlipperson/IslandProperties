@@ -27,7 +27,7 @@ export default function Listings() {
     {
       title: "Condos",
       href: "/condos",
-      image: "https://images.unsplash.com/photo-1545324418-cc1a3fa10c00?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&h=400"
+      image: "https://i.imgur.com/jTZXH7l.png"
     },
     {
       title: "Beach",
@@ -42,7 +42,7 @@ export default function Listings() {
     {
       title: "Agriculture",
       href: "/agriculture",
-      image: "https://images.unsplash.com/photo-1574323347407-f5e1ad6d020b?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&h=400"
+      image: "https://i.imgur.com/lMxq4s6.jpeg"
     }
   ];
 

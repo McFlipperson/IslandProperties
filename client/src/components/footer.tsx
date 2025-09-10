@@ -6,14 +6,16 @@ export default function Footer() {
       <div className="container mx-auto px-6">
         <div className="grid md:grid-cols-4 gap-8">
           <div>
-            <div className="flex items-center space-x-2 mb-6">
-              <img 
-                src="https://i.imgur.com/42h36DK.png" 
-                alt="Island Properties Logo" 
-                className="h-8 w-auto brightness-0 invert" 
-              />
-              <span className="text-xl font-bold">Island Properties</span>
-            </div>
+            <div className="mb-6">
+  <img 
+  src="https://i.imgur.com/42h36DK.png" 
+  alt="Island Properties Logo" 
+  className="h-16 w-auto max-w-none" 
+  onError={(e) => {
+    e.currentTarget.style.display = 'none';
+  }}
+/>
+</div>
             <p className="text-background/80">
               Your trusted partner in finding the perfect property. Excellence in real estate since 2005.
             </p>

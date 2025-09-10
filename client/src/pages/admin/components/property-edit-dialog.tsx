@@ -136,11 +136,11 @@ export default function PropertyEditDialog({
         },
       };
       
-      if (property) {
-        return apiRequest(`/api/admin/properties/${property.id}`, "PUT", payload);
-      } else {
-        return apiRequest("/api/admin/properties", "POST", payload);
-      }
+    if (property) {
+  return apiRequest(`/api/admin/properties/${property.id}`, "PUT", payload);
+} else {
+  return apiRequest("/api/admin/properties", "POST", payload);
+}
     },
     onSuccess: () => {
       toast({
@@ -220,15 +220,27 @@ export default function PropertyEditDialog({
     }
   }, [property, open, form]);
 
-  const handleDrop = (e: React.DragEvent) => {
-    e.preventDefault();
-    setDragActive(false);
-    // In a real implementation, you would upload the files here
-    const files = Array.from(e.dataTransfer.files);
-    const newImages = files.map((file, index) => `https://images.unsplash.com/photo-1560448204-e02f11c3d0e2?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&h=600&${index}`);
-    const currentImages = form.getValues("images");
-    form.setValue("images", [...currentImages, ...newImages]);
-  };
+  const handleDrop = async (e: React.DragEvent) => {
+  e.preventDefault();
+  setDragActive(false);
+  
+  const files = Array.from(e.dataTransfer.files);
+  const imageFiles = files.filter(file => file.type.startsWith('image/'));
+  
+  // Convert files to base64 data URLs
+  const newImages = await Promise.all(
+    imageFiles.map(file => {
+      return new Promise<string>((resolve) => {
+        const reader = new FileReader();
+        reader.onload = (e) => resolve(e.target?.result as string);
+        reader.readAsDataURL(file);
+      });
+    })
+  );
+  
+  const currentImages = form.getValues("images");
+  form.setValue("images", [...currentImages, ...newImages]);
+};
 
   const handleDragOver = (e: React.DragEvent) => {
     e.preventDefault();

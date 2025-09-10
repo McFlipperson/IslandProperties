@@ -2,6 +2,23 @@ import type { Express, Request, Response, NextFunction } from "express";
 import { createServer, type Server } from "http";
 import { randomUUID } from "crypto";
 import { storage } from "./storage";
+import multer from 'multer';
+import path from 'path';
+
+// Configure multer for file uploads
+const multerStorage = multer.memoryStorage();
+const upload = multer({ 
+  storage: multerStorage,
+  limits: { fileSize: 10 * 1024 * 1024 }, // 10MB limit
+  fileFilter: (req, file, cb) => {
+    const allowedTypes = ['image/jpeg', 'image/png', 'image/gif', 'image/webp'];
+    if (allowedTypes.includes(file.mimetype)) {
+      cb(null, true);
+    } else {
+      cb(new Error('Invalid file type. Only images allowed.'));
+    }
+  }
+});
 
 // Simple session storage for demo
 const adminSessions = new Map<string, { adminUserId: string; expiresAt: Date }>();
@@ -31,6 +48,21 @@ const adminAuth = async (req: Request & { adminUser?: any }, res: Response, next
 };
 
 export async function registerRoutes(app: Express): Promise<Server> {
+  // File upload route
+  app.post("/api/upload", adminAuth, upload.single('image'), async (req, res) => {
+    try {
+      if (!req.file) {
+        return res.status(400).json({ error: "No file uploaded" });
+      }
+
+      const base64Data = req.file.buffer.toString('base64');
+      const dataUrl = `data:${req.file.mimetype};base64,${base64Data}`;
+      
+      res.json({ url: dataUrl });
+    } catch (error) {
+      res.status(500).json({ error: "Upload failed" });
+    }
+  });
   // Properties API
   app.get("/api/properties", async (_req, res) => {
     try {
@@ -81,6 +113,102 @@ export async function registerRoutes(app: Express): Promise<Server> {
   });
 
   // Testimonials API
+  // Blog Posts API
+  app.get("/api/blog-posts", async (_req, res) => {
+    try {
+      const allPosts = await storage.getAllBlogPosts();
+      // Only return published posts for public API
+      const publishedPosts = allPosts.filter(post => post.status === 'published');
+      res.json(publishedPosts);
+    } catch (error) {
+      res.status(500).json({ error: "Failed to fetch blog posts" });
+    }
+  });
+
+  app.get("/api/admin/blog-posts", adminAuth, async (_req, res) => {
+    try {
+      const blogPosts = await storage.getAllBlogPosts();
+      res.json(blogPosts);
+    } catch (error) {
+      res.status(500).json({ error: "Failed to fetch blog posts" });
+    }
+  });
+
+  app.get("/api/blog-posts/:id", async (req, res) => {
+    try {
+      const post = await storage.getBlogPost(req.params.id);
+      if (!post) {
+        return res.status(404).json({ error: "Blog post not found" });
+      }
+      res.json(post);
+    } catch (error) {
+      res.status(500).json({ error: "Failed to fetch blog post" });
+    }
+  });
+
+  app.post("/api/admin/blog-posts", adminAuth, async (req: any, res) => {
+    try {
+      const blogPost = await storage.createBlogPost(req.body);
+      
+      // Log the creation
+      await storage.createSecurityLog({
+        adminUserId: req.adminUser.id,
+        action: "create_blog_post",
+        ipAddress: req.ip,
+        userAgent: req.headers['user-agent'],
+        details: { postId: blogPost.id, title: blogPost.title }
+      });
+      
+      res.status(201).json(blogPost);
+    } catch (error) {
+      console.error("Create blog post error:", error);
+      res.status(400).json({ error: "Failed to create blog post" });
+    }
+  });
+
+  app.put("/api/admin/blog-posts/:id", adminAuth, async (req: any, res) => {
+    try {
+      const blogPost = await storage.updateBlogPost(req.params.id, req.body);
+      
+      // Log the update
+      await storage.createSecurityLog({
+        adminUserId: req.adminUser.id,
+        action: "update_blog_post",
+        ipAddress: req.ip,
+        userAgent: req.headers['user-agent'],
+        details: { postId: blogPost.id, title: blogPost.title }
+      });
+      
+      res.json(blogPost);
+    } catch (error) {
+      console.error("Update blog post error:", error);
+      res.status(400).json({ error: error instanceof Error ? error.message : "Failed to update blog post" });
+    }
+  });
+
+  app.delete("/api/admin/blog-posts/:id", adminAuth, async (req: any, res) => {
+    try {
+      const post = await storage.getBlogPost(req.params.id);
+      if (!post) {
+        return res.status(404).json({ error: "Blog post not found" });
+      }
+      
+      await storage.deleteBlogPost(req.params.id);
+      
+      // Log the deletion
+      await storage.createSecurityLog({
+        adminUserId: req.adminUser.id,
+        action: "delete_blog_post",
+        ipAddress: req.ip,
+        userAgent: req.headers['user-agent'],
+        details: { postId: req.params.id, title: post.title }
+      });
+      
+      res.json({ success: true });
+    } catch (error) {
+      res.status(500).json({ error: "Failed to delete blog post" });
+    }
+  });
   app.get("/api/testimonials", async (_req, res) => {
     try {
       const testimonials = await storage.getAllTestimonials();

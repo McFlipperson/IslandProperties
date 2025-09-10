@@ -36,9 +36,21 @@ export default function AdminLand() {
   const { toast } = useToast();
 
   const { data: properties = [], isLoading, refetch } = useQuery<Property[]>({
-    queryKey: ["/api/admin/properties", { category: "land", search, status: statusFilter !== "all" ? statusFilter : undefined }],
-  });
-
+  queryKey: ["/api/admin/properties", "land", search, statusFilter],
+  queryFn: async () => {
+    const params = new URLSearchParams();
+    params.append('category', 'land');
+    if (search) params.append('search', search);
+    if (statusFilter !== 'all') params.append('status', statusFilter);
+    
+    const response = await fetch(`/api/admin/properties?${params.toString()}`, {
+      credentials: 'include'
+    });
+    
+    if (!response.ok) throw new Error('Failed to fetch');
+    return response.json();
+  }
+});
   const deleteMutation = useMutation({
     mutationFn: (id: string) => apiRequest(`/api/admin/properties/${id}`, "DELETE"),
     onSuccess: () => {

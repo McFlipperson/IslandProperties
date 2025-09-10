@@ -3,9 +3,10 @@ import { Link } from "wouter";
 import Header from "@/components/header";
 import Footer from "@/components/footer";
 import PropertyCard from "@/components/property-card";
-import TestimonialCard from "@/components/testimonial-card";
+import BlogCard from "@/components/blog-card";
 import { Button } from "@/components/ui/button";
-import { Property, Testimonial } from "@shared/schema";
+import { Property, Testimonial, BlogPost } from "@shared/schema";
+import TestimonialCard from "@/components/testimonial-card";
 
 export default function Home() {
   const { data: hotProperties = [] } = useQuery<Property[]>({
@@ -19,7 +20,9 @@ export default function Home() {
   const { data: testimonials = [] } = useQuery<Testimonial[]>({
     queryKey: ["/api/testimonials"],
   });
-
+const { data: blogPosts = [] } = useQuery<BlogPost[]>({
+  queryKey: ["/api/blog-posts"],
+});
 
   return (
     <div className="min-h-screen bg-background">

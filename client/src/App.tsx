@@ -16,6 +16,8 @@ import Commercial from "@/pages/commercial";
 import Agriculture from "@/pages/agriculture";
 import About from "@/pages/about";
 import Contact from "@/pages/contact";
+import AdminBlog from "@/pages/admin/content/blog";
+import AdminTestimonials from "@/pages/admin/content/testimonials";
 
 // Admin imports
 import AdminLogin from "@/pages/admin/login";
@@ -92,7 +94,16 @@ function Router() {
             <AdminAgriculture />
           </AdminLayout>
         )} />
-        
+        <Route path="/admin/content/testimonials" component={() => (
+  <AdminLayout>
+    <AdminTestimonials />
+  </AdminLayout>
+)} />
+        <Route path="/admin/content/blog" component={() => (
+  <AdminLayout>
+    <AdminBlog />
+  </AdminLayout>
+)} />
         <Route component={NotFound} />
       </Switch>
     </>

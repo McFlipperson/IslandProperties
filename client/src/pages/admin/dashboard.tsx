@@ -131,43 +131,50 @@ export default function AdminDashboard() {
       </div>
 
       {/* Quick Actions */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
-        <Button 
-          className="h-24 flex flex-col space-y-2" 
-          variant="outline"
-          data-testid="quick-add-property"
-        >
-          <Plus className="w-6 h-6" />
-          <span>Add Property</span>
-        </Button>
-        
-        <Button 
-          className="h-24 flex flex-col space-y-2" 
-          variant="outline"
-          data-testid="manage-blog"
-        >
-          <FileText className="w-6 h-6" />
-          <span>Manage Blog</span>
-        </Button>
-        
-        <Button 
-          className="h-24 flex flex-col space-y-2" 
-          variant="outline"
-          data-testid="manage-testimonials"
-        >
-          <MessageCircle className="w-6 h-6" />
-          <span>Testimonials</span>
-        </Button>
-        
-        <Button 
-          className="h-24 flex flex-col space-y-2" 
-          variant="outline"
-          data-testid="security-logs"
-        >
-          <Shield className="w-6 h-6" />
-          <span>Security Logs</span>
-        </Button>
-      </div>
+      {/* Quick Actions */}
+<div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+  <Button 
+    className="h-24 flex flex-col space-y-2" 
+    variant="outline"
+    data-testid="quick-add-property"
+  >
+    <Plus className="w-6 h-6" />
+    <span>Add Property</span>
+  </Button>
+  
+  <Link href="/admin/content/blog">
+    <Button 
+      className="h-24 flex flex-col space-y-2 w-full" 
+      variant="outline"
+      data-testid="manage-blog"
+    >
+      <FileText className="w-6 h-6" />
+      <span>Manage Blog</span>
+    </Button>
+  </Link>
+  
+  <Link href="/admin/content/testimonials">
+    <Button 
+      className="h-24 flex flex-col space-y-2 w-full" 
+      variant="outline"
+      data-testid="manage-testimonials"
+    >
+      <MessageCircle className="w-6 h-6" />
+      <span>Testimonials</span>
+    </Button>
+  </Link>
+  
+  <Link href="/admin/security">
+    <Button 
+      className="h-24 flex flex-col space-y-2 w-full" 
+      variant="outline"
+      data-testid="security-logs"
+    >
+      <Shield className="w-6 h-6" />
+      <span>Security Logs</span>
+    </Button>
+  </Link>
+</div>
 
       {/* Recent Activity */}
       <Card>

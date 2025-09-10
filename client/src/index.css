@@ -159,7 +159,7 @@
     position: relative;
     z-index: 10;
   }
-  
+
   .btn-primary {
     background: linear-gradient(135deg, var(--primary), var(--secondary));
     transition: all 0.3s ease;
@@ -175,4 +175,20 @@
     background: rgba(255, 255, 255, 0.95);
     border-bottom: 1px solid hsl(214 32% 91% / 0.5);
   }
+}
+/* Text truncation utilities */
+.line-clamp-2 {
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.line-clamp-3 {
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
 }
